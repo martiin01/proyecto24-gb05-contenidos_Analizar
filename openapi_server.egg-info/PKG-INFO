@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: openapi_server
+Version: 1.0.0
+Summary: Cineverse Contenidos API
+Home-page: 
+Author-email: 
+Keywords: OpenAPI,Cineverse Contenidos API
+Requires-Dist: connexion>=2.0.2
+Requires-Dist: swagger-ui-bundle>=0.0.2
+Requires-Dist: python_dateutil>=2.6.0
+
+    Gestión de contenidos, filtrado y reproducción de medios en Cineverse
+    

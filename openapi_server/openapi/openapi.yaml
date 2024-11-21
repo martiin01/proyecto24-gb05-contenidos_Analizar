@@ -1,0 +1,130 @@
+openapi: 3.0.0
+info:
+  description: "Gestión de contenidos, filtrado y reproducción de medios en Cineverse"
+  title: Cineverse Contenidos API
+  version: 1.1.0
+servers:
+- url: http://localhost:8080/api
+paths:
+  /contenidos:
+    get:
+      description: "Devuelve una lista completa de todos los contenidos disponibles\
+        \ en la plataforma, con opciones para filtrar por género y ordenar por fecha\
+        \ o popularidad."
+      operationId: obtener_catalogo
+      parameters:
+      - description: Filtrar los contenidos por género.
+        explode: true
+        in: query
+        name: genero
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Ordenar los contenidos por popularidad o fecha de lanzamiento.
+        explode: true
+        in: query
+        name: orden
+        required: false
+        schema:
+          enum:
+          - asc
+          - desc
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contenido'
+          description: Catálogo obtenido correctamente
+      summary: Obtener catálogo completo de contenidos
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /contenidos/{id}:
+    get:
+      description: "Obtiene la información completa de un contenido específico, incluyendo\
+        \ descripción, duración, género, y calificaciones promedio."
+      operationId: contenidos_id_get
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contenido'
+          description: Detalles del contenido obtenidos exitosamente
+        "404":
+          description: Contenido no encontrado
+      summary: Obtener detalles de un contenido
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /contenidos/{id}/reproducir:
+    get:
+      description: Permite la reproducción del contenido seleccionado en alta calidad.
+      operationId: reproducir_contenido
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          description: Reproducción iniciada correctamente
+        "404":
+          description: Contenido no encontrado
+      summary: Reproducir contenido en alta calidad
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+components:
+  schemas:
+    Contenido:
+      example:
+        descripcion: descripcion
+        thumbnail: thumbnail
+        urlVideo: urlVideo
+        genero: genero
+        rating: 5.962134
+        titulo: titulo
+        duracion: 6
+        id: 0
+        añoLanzamiento: 1
+      properties:
+        id:
+          title: id
+          type: integer
+        titulo:
+          title: titulo
+          type: string
+        descripcion:
+          title: descripcion
+          type: string
+        genero:
+          title: genero
+          type: string
+        duracion:
+          title: duracion
+          type: integer
+        añoLanzamiento:
+          title: añoLanzamiento
+          type: integer
+        rating:
+          format: float
+          title: rating
+          type: number
+        urlVideo:
+          title: urlVideo
+          type: string
+        thumbnail:
+          title: thumbnail
+          type: string
+      title: Contenido
+      type: object
