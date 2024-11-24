@@ -26,3 +26,12 @@ def obtener_catalogo(db: Session, genero: str = None, orden: str = None):
         return contenidos_list
     except Exception as e:
         raise e
+def reproducir_contenido(db: Session, contenido_id: int):
+    try:
+        contenido = db.query(ContenidoDB).filter(ContenidoDB.id_contenido == contenido_id).first()
+        if contenido:
+            return contenido
+        else:
+            return None
+    except Exception as e:
+        raise e
