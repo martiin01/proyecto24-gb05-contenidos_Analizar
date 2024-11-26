@@ -1,38 +1,20 @@
-name: Python Flask SonarCloud Analysis
-
+name: Build
 on:
   push:
     branches:
-      - master  # Ejecutar en la rama master
+      - main
   pull_request:
-    types: [opened, synchronize, reopened]  # Ejecutar en Pull Requests
-
+    types: [opened, synchronize, reopened]
 jobs:
   sonarcloud:
-    name: SonarCloud Analysis
+    name: SonarQube Cloud
     runs-on: ubuntu-latest
-
     steps:
-      # 1. Clonar el código del repositorio
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Necesario para el análisis de SonarCloud
-
-      # 2. Configurar Python
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.x  # Usa la versión requerida por tu proyecto Flask
-
-      # 3. Instalar dependencias
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      # 4. Ejecutar el análisis de SonarCloud
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v3.1.0
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: SonarQube Cloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Token de autenticación para SonarCloud
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
